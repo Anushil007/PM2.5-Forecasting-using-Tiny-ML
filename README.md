@@ -1,32 +1,37 @@
-# Nepal Air Quality Monitoring – MSc Project
+# Nepal Air Quality Monitoring Station – MSc Project
 
-## Stage 4: Data Acquisition, Curation and Exploratory Data Analysis
+## Project Overview
 
-This repository contains the datasets, Jupyter notebooks, and supporting files developed during Stage 4 of the MSc project. The work focuses on acquiring air-quality and meteorological data, preparing curated datasets, and conducting exploratory data analysis to characterize particulate matter concentrations and their temporal, spatial, and meteorological relationships.
+This repository contains the datasets and Python notebooks developed for the MSc project on a Nepal Air Quality Monitoring Station.
+
+The project focuses on air-quality data acquisition, curation, exploratory data analysis, and the development of a system for monitoring air quality and predicting near-future pollution levels.
 
 ## Repository Structure
 
 ```text
-nepal-air-quality-station-msc/
+repository/
 │
-├── datasets/
-│   ├── raw/
-│   │   ├── OpenAQ/
-│   │   ├── OpenMeteo/
-│   │   └── CAMS/
-│   │
-│   └── curated/
-│       ├── hadigaun_curated.csv
-│       ├── master_hadigaun_curated.csv
-│       ├── lalitpur_curated.csv
-│       ├── pokhara_curated.csv
-│       ├── embassy_curated.csv
-│       ├── durbar_curated.csv
-│       └── cams_curated.csv
+├── dataset/
+│   ├── master_hadigaun_merged_raw.csv
+│   ├── raw_data_durbar.csv
+│   ├── raw_data_embassy.csv
+│   ├── raw_data_hadigaun.csv
+│   ├── raw_data_lalitpur.csv
+│   ├── raw_data_pokhara.csv
+│   └── weather_data_hadigaun.csv
+│
+├── curated/
+│   ├── cams_curated.csv
+│   ├── durbar_curated.csv
+│   ├── embassy_curated.csv
+│   ├── hadigaun_curated.csv
+│   ├── lalitpur_curated.csv
+│   ├── master_hadigaun_curated.csv
+│   └── pokhara_curated.csv
 │
 ├── notebooks/
-│   ├── 01_data_extraction.ipynb
-│   └── 02_eda.ipynb
+│   ├── Data_Acquisition.ipynb
+│   └── EDA.ipynb
 │
 ├── requirements.txt
 ├── data_dictionary.xlsx
@@ -35,64 +40,64 @@ nepal-air-quality-station-msc/
 
 ## Dataset Description
 
-### 1. Raw Datasets
+### 1. Raw Datasets — `dataset/`
 
-The `datasets/raw/` directory contains the original acquired datasets, organized by their respective sources:
+Contains the acquired datasets before the final curation process.
 
-- **OpenAQ:** Ground-based air-quality observations from monitoring locations.
-- **Open-Meteo:** Meteorological observations and reanalysis data.
-- **CAMS:** Copernicus Atmosphere Monitoring Service data used for comparison with ground-based PM2.5 observations.
-
-Raw data are retained separately from the curated datasets to preserve the original source records.
-
-### 2. Curated Datasets
-
-The `datasets/curated/` directory contains the processed datasets prepared for Stage 4 analysis.
-
-| Dataset | Description |
+| File | Description |
 |---|---|
-| `hadigaun_curated.csv` | Primary Hadigaun air-quality and sensor observations |
-| `master_hadigaun_curated.csv` | Matched Hadigaun air-quality and meteorological dataset |
-| `lalitpur_curated.csv` | Curated air-quality observations from Lalitpur |
-| `pokhara_curated.csv` | Curated air-quality observations from Pokhara |
-| `embassy_curated.csv` | Historical air-quality observations from the Embassy monitoring location |
-| `durbar_curated.csv` | Historical air-quality observations from the Durbar monitoring location |
-| `cams_curated.csv` | Curated CAMS data used for comparison with ground-based observations |
+| `raw_data_hadigaun.csv` | Raw air-quality observations from Hadigaun |
+| `raw_data_lalitpur.csv` | Raw air-quality observations from Lalitpur |
+| `raw_data_pokhara.csv` | Raw air-quality observations from Pokhara |
+| `raw_data_embassy.csv` | Raw air-quality observations from the Embassy station |
+| `raw_data_durbar.csv` | Raw air-quality observations from the Durbar station |
+| `master_hadigaun_merged_raw.csv` | Merged raw dataset associated with the Hadigaun monitoring location |
+| `weather_data_hadigaun.csv` | Meteorological data associated with Hadigaun |
 
-The datasets support temporal, spatial, meteorological, and pollution-episode analyses.
+### 2. Curated Datasets — `curated/`
+
+Contains the processed datasets prepared for exploratory analysis and subsequent modelling.
+
+| File | Description |
+|---|---|
+| `hadigaun_curated.csv` | Curated Hadigaun air-quality dataset |
+| `lalitpur_curated.csv` | Curated Lalitpur air-quality dataset |
+| `pokhara_curated.csv` | Curated Pokhara air-quality dataset |
+| `embassy_curated.csv` | Curated Embassy air-quality dataset |
+| `durbar_curated.csv` | Curated Durbar air-quality dataset |
+| `master_hadigaun_curated.csv` | Integrated Hadigaun dataset with air-quality and meteorological variables |
+| `cams_curated.csv` | Curated CAMS dataset used for comparison with ground-level observations |
 
 ## Notebooks
 
-The `notebooks/` directory contains the executable Jupyter notebooks used for data acquisition and exploratory analysis.
+The `notebooks/` directory contains the Python notebooks used in the project.
 
-- **`01_data_extraction.ipynb`** – Data acquisition and extraction procedures for the datasets used in the project.
-- **`02_eda.ipynb`** – Data auditing, curation, statistical summaries, spatial and temporal analysis, meteorological analysis, lag analysis, and high-pollution episode analysis.
-
-The notebooks document the analytical workflow and support reproducibility of the Stage 4 results.
+- **`Data_Acquisition.ipynb`** — Data acquisition and extraction workflows.
+- **`EDA.ipynb`** — Data auditing, curation-related analysis, statistical summaries, and exploratory data analysis.
 
 ## Data Dictionary
 
-`data_dictionary.xlsx` provides descriptions of the datasets and their variables, including variable names, definitions, measurement units, data sources, and relevant processing information.
+`data_dictionary.xlsx` documents the datasets, including variable names, descriptions, units, data types, and other relevant information.
 
 ## Environment Setup
 
-The project uses Python and Jupyter Notebook.
-
-To install the required Python dependencies, create and activate a virtual environment, then execute:
+Install the required Python packages using:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-To launch Jupyter Notebook:
+Launch Jupyter Notebook:
 
 ```bash
 jupyter notebook
 ```
 
+Open the relevant notebook from the `notebooks/` directory.
+
 ## Notes
 
 - Raw and curated datasets are maintained separately.
-- Timestamps and measurement units should be interpreted according to the relevant dataset documentation and data dictionary.
-- The accompanying project report documents the data preparation decisions, transformations, analytical methods, results, and limitations.
-- This repository currently covers **Stage 4 only**. Subsequent project stages will be incorporated as development progresses.
+- The curated datasets are intended for analysis and subsequent modelling.
+- The notebooks provide the computational workflows used in the project.
+- Project reports and detailed research documentation are maintained separately from this repository.
