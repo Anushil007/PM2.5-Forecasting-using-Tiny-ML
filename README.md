@@ -32,6 +32,7 @@ Nepal-Air-Quality-Monitoring/
 │   ├── durbar_curated.csv
 │   ├── embassy_curated.csv
 │   ├── hadigaun_curated.csv
+│   ├── hadigaun_complete_hourly.csv
 │   ├── lalitpur_curated.csv
 │   ├── master_hadigaun_curated.csv
 │   └── pokhara_curated.csv
@@ -88,7 +89,7 @@ The dataset contains 20 hourly meteorological variables, including:
 
 The weather data are model-derived estimates rather than measurements from an instrument located at the monitoring station.
 
-The original weather dataset is retained in `dataset/raw_weather_data_hadigaun.csv` and is used directly in the analysis. Its observations are also incorporated into the Hadigaun master dataset.
+The original weather dataset is retained in `dataset/raw_weather_data_hadigaun.csv` and is used directly in the analysis. Its observations are also incorporated into the Hadigaun master datasets.
 
 ### 3. CAMS Atmospheric Data
 
@@ -124,20 +125,34 @@ Contains the processed datasets prepared for analysis.
 | Dataset | Rows | Columns | Description |
 |---|---:|---:|---|
 | Hadigaun | 10,981 | 6 | Primary station observations |
-| Hadigaun master | 10,981 | 26 | Hadigaun observations integrated with meteorological variables |
+| Hadigaun master | 10,981 | 26 | Hadigaun sensor observations integrated with meteorological variables, retaining sensor timestamps |
+| Hadigaun complete hourly | 11,409 | 25 | Complete hourly weather timeline with Hadigaun sensor observations left-joined; missing sensor readings remain blank |
 | Lalitpur | 6,000 | 6 | Contemporary spatial comparison |
 | Pokhara | 7,783 | 6 | Contemporary spatial comparison |
 | Embassy Kathmandu | 19,305 | 2 | Historical PM2.5 observations |
 | Phora Durbar | 17,797 | 2 | Historical PM2.5 observations |
 | CAMS | 37,200 | 7 | Supplementary atmospheric estimates |
 
-The weather dataset does not have a separate curated CSV. The original weather file is used directly, while the meteorological variables are also included in the curated Hadigaun master dataset.
+The weather dataset does not have a separate curated CSV. The original weather file is used directly, while the meteorological variables are also included in the curated Hadigaun master datasets.
+
+The two Hadigaun master datasets serve different purposes:
+
+- `master_hadigaun_curated.csv` retains only timestamps with Hadigaun sensor observations. Meteorological variables are joined onto these sensor timestamps.
+- `hadigaun_complete_hourly.csv` retains the complete hourly timeline from the weather dataset. Hadigaun sensor observations are left-joined onto this timeline, so hours without corresponding sensor observations remain present with the sensor variables left blank.
+
+The complete hourly dataset contains 11,409 records with no missing hourly timestamps. It provides a continuous meteorological time axis while preserving unavailable sensor observations as missing values rather than artificially filling them.
 
 ### `data_dictionary.xlsx`
 
 Provides the dataset inventory and variable-level reference information, including descriptions, units, data types, sources, and relevant processing notes.
 
-## Data Preparation
+It contains three sheets:
+
+- `Raw_Datasets`: Inventory and descriptions of the acquired and intermediate raw datasets.
+- `Curated_Datasets`: Inventory and descriptions of the processed datasets.
+- `Variable_Reference`: Variable-level definitions, units, data types, sources, and processing notes.
+
+### `Data Preparation`
 
 The preparation workflow applies source-specific cleaning and standardisation while retaining the original source datasets.
 
@@ -153,7 +168,8 @@ Key processing decisions include:
 - The 72 leading CAMS records with missing values across all six atmospheric variables are excluded from the curated CAMS dataset.
 - Missing observations are not artificially filled through imputation or interpolation.
 - Boundary layer height gaps are retained as missing values.
-- The Hadigaun master dataset is formed by joining meteorological observations onto the Hadigaun station timestamps. Weather-only timestamps do not create additional station records.
+- `master_hadigaun_curated.csv` is formed by joining meteorological observations onto Hadigaun sensor timestamps. Weather-only timestamps do not create additional station records.
+- `hadigaun_complete_hourly.csv` uses the complete hourly weather timeline as its reference and left-joins Hadigaun sensor observations. Sensor variables remain blank where observations are unavailable.
 
 Further details about transformations and variable definitions are provided in `data_dictionary.xlsx` and the EDA notebook.
 
@@ -202,5 +218,7 @@ Open the notebooks from the `notebooks/` directory.
 - Ground-based observations, meteorological estimates, and CAMS estimates have different sources, measurement characteristics, and spatial representations. They should not be treated as interchangeable.
 - Particle-count measurements are retained as reported by the source; their magnitude and precise size interpretation should be considered alongside the source metadata.
 - Missing values are preserved where observations are unavailable rather than replaced with fabricated measurements.
+- `hadigaun_complete_hourly.csv` provides complete hourly coverage across its recorded period. Missing sensor observations are preserved as blank values rather than imputed or interpolated.
+- The complete hourly dataset contains 11,409 hourly timestamps; this does not imply that sensor observations are available for every hour.
 - Exploratory relationships and correlations do not establish causation.
 - The current analysis does not constitute a validated forecasting model or a completed edge-deployment system.
